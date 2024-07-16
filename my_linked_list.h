@@ -26,8 +26,10 @@ public:
   
   int pop();
   
-  void insert_at(int index);
+  void insert_at(int index, int value);
   
+  int remove_at(int index, int value);
+
   void to_string();
 
 };
