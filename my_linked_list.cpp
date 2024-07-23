@@ -7,96 +7,126 @@ my_linked_list::node::node() : value(0) {
 my_linked_list::node::node(int value) {
   this->value = value;
 }
-my_linked_list::node::~node() {
-  delete this->next;
-}
+my_linked_list::node::~node() = default;
 
 my_linked_list::my_linked_list() :
-  head(new node()), tail(new node()) {
-
+  head(nullptr), tail(nullptr) {
 }
 my_linked_list::~my_linked_list() {
-  delete head;
-  delete tail;
+  node * trav = head;
+  node * temp = nullptr;
+  for (trav; trav.next != nullptr; trav = trav.next) {
+    temp = trav.next;
+    delete trav;
+    trav = temp;
+  }
+}
+
+int my_linked_list::is_empty() {
+  return size == 0;
 }
 
 void my_linked_list::push(int value) {
   node * new_node = new node(value);
-  try {
-    // if we have at least 1 node in the linked list
-    tail->next->next = new_node;
+  if (is_empty()) {
+    head = tail = new_node;
   }
-  catch (const std::exception&) {
-    // to nothing
+  else {
+    tail->next = new_node;
+    tail = new_node;
   }
-  tail->next = new_node;
-  if (size == 0) {
-    head->next = new_node;
-  }
+
+  size++;
 }
 
 int my_linked_list::pop() {
-  node trav1 = head->next;
-  while (trav1->next != tail) {
-    trav1 = trav1->next;
+  int tail_value = 0;
+  if (is_empty()) {
+    throw std::runtime_error("Deleting from empty list");
   }
-  tail_value = tail->value;
-  
-  delete tail;
-  tail = trav1;
-  tail->next = nullptr;
+  else if (size == 1) {
+    tail_value = tail->value;
+    delete tail;
+    head = tail = nullptr;
+  }
+  else {
+    node * trav = head;
+    for (trav; trav->next != tail; trav = trav.next) {}
 
+    tail_value = tail->value;
+    delete tail;
+    tail = trav;
+    tail->next = nullptr;
+  }
+
+  size--;
   return tail_value;
 }
 
 void my_linked_list::insert_at(int index, int value) {
-  node trav1 = head;
-  node trav2 = head->next;
-
-  node * temp_ = new node(value);
-
-  for (size_t i = 0; i < index - 1; i++) {
-    trav1 = trav1->next;
-    trav2 = trav2->next;
+  if (index > size) {
+    throw std::out_of_range("Index out of range");
   }
-  temp_->next = trav2;
-  trav1->next = temp_;
+  else if (is_empty() && index == 0) {
+    head = tail = new node(value);
+  }
+  else {
+    node * trav1 = head;
+    node * trav2 = nullptr;
+    auto * new_node = new node(value);
+
+    for (size_t i = 0; i < index; i++) {
+      trav2 = trav1;
+      trav1 = trav1->next;
+    }
+    trav2->next = new_node;
+    new_node->next = trav1;
+  }
+  size++;
 }
 
-int my_linked_list::remove_at(int index, int value) {
-  node trav1 = head;
-  node trav2 = head->next;
-
-  for (size_t i = 0; i < index - 1; i++) {
-    trav1 = trav1->next;
-    trav2 = trav2->next;
+int my_linked_list::remove_at(int index) {
+  if (index >= size) {
+    throw std::out_of_range("Index out of range");
   }
-  // points to the node we want to delete
-  node temp = trav2;
-  // jump to the next one
-  trav2 = trav2->next;
-  // make temp stop pointing to the linked list
-  temp->next = nullptr;
-  // skip te node we want to delete
-  trav1->next = trav2;
+  else if (size == 0) {
+    throw std::runtime_error("Deleting from empty list")
+  }
+  else {
+    node * trav1 = head;
+    node * trav2 = nullptr;
+    for (size_t i = 0; i < index; i++) {
+      trav2 = trav1;
+      trav1 = trav1->next;
+    }
+    // points to the node we want to delete
+    node * target = trav1;
+    int target_value = target->value;
+    // jump to the next one
+    trav1 = trav1->next;
+    // skip the node we want to delete
+    trav2->next = trav1;
 
-  delete temp;
+    delete target;
+    size--;
+    return target_value;
+  }
 }
 
 void my_linked_list::to_string() {
   std::cout << "[";
 
-  node trav = head->next();
+  node * trav = head->next;
   // iterates over all the nodes, if no nodes just skips the loop
   for (size_t i = 0; i < size; i++) {
     // prints current nodes value and goes to the next one
     std::cout << trav->value;
     if (trav->next != nullptr) {
-      cout << ", ";
+      std::cout << ", ";
     }
     trav = trav->next;
   }
   
-  std::cout << "]" << endl;
+  std::cout << "]" << std::endl;
 }
 

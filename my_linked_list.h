@@ -22,13 +22,15 @@ public:
   my_linked_list();
   ~my_linked_list();
 
+  int is_empty();
+
   void push(int value);
   
   int pop();
   
   void insert_at(int index, int value);
   
-  int remove_at(int index, int value);
+  int remove_at(int index);
 
   void to_string();
 
