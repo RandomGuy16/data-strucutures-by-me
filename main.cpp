@@ -2,6 +2,7 @@
 #include "my_arr.h"
 #include "my_dynamic_arr.h"
 #include "my_linked_list.h"
+#include "my_dlinked_list.h"
 
 using namespace std;
 
@@ -20,22 +21,34 @@ int main(int argc, char const *argv[])
 
   d_arr.get_at(5);
   d_arr.set_at(6, 1);
-  d_arr.set_at(16, 56);
+  d_arr.set_at(16, 28);
   d_arr.to_string();
 
   auto l_list = my_linked_list();
 
-  l_list.push(1);
-  l_list.push(2);
-  l_list.push(3);
-  l_list.push(5);
+  l_list.insert_last(1);
+  l_list.insert_last(2);
+  l_list.insert_last(3);
+  l_list.insert_last(5);
   l_list.insert_at(3, 4);
-  l_list.push(6);
-  l_list.pop();
+  l_list.insert_last(6);
+  l_list.remove_last();
 
   l_list.remove_at(3);
 
   cout << "checkpoint" << endl;
+
+  auto dl_list = my_dlinked_list();
+
+  l_list.insert_last(1);
+  l_list.insert_last(2);
+  l_list.insert_last(3);
+  l_list.insert_last(5);
+  l_list.insert_at(3, 4);
+  l_list.insert_last(6);
+  l_list.remove_last();
+
+  l_list.remove_at(3);
 
   return 0;
 }

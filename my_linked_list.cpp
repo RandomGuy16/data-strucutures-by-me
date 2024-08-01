@@ -13,10 +13,9 @@ my_linked_list::my_linked_list() :
   head(nullptr), tail(nullptr) {
 }
 my_linked_list::~my_linked_list() {
-  node * trav = head;
   node * temp = nullptr;
-  for (trav; trav.next != nullptr; trav = trav.next) {
-    temp = trav.next;
+  for (node * trav = head; trav->next != nullptr; trav = trav->next) {
+    temp = trav->next;
     delete trav;
     trav = temp;
   }
@@ -26,8 +25,8 @@ int my_linked_list::is_empty() {
   return size == 0;
 }
 
-void my_linked_list::push(int value) {
-  node * new_node = new node(value);
+void my_linked_list::insert_last(int value) {
+  auto * new_node = new node(value);
   if (is_empty()) {
     head = tail = new_node;
   }
@@ -39,7 +38,7 @@ void my_linked_list::push(int value) {
   size++;
 }
 
-int my_linked_list::pop() {
+int my_linked_list::remove_last() {
   int tail_value = 0;
   if (is_empty()) {
     throw std::runtime_error("Deleting from empty list");
@@ -51,7 +50,7 @@ int my_linked_list::pop() {
   }
   else {
     node * trav = head;
-    for (trav; trav->next != tail; trav = trav.next) {}
+    for ( ; trav->next != tail; trav = trav->next);
 
     tail_value = tail->value;
     delete tail;
@@ -90,7 +89,7 @@ int my_linked_list::remove_at(int index) {
     throw std::out_of_range("Index out of range");
   }
   else if (size == 0) {
-    throw std::runtime_error("Deleting from empty list")
+    throw std::runtime_error("Deleting from empty list");
   }
   else {
     node * trav1 = head;
@@ -116,7 +115,7 @@ int my_linked_list::remove_at(int index) {
 void my_linked_list::to_string() {
   std::cout << "[";
 
-  node * trav = head->next;
+  node * trav = head;
   // iterates over all the nodes, if no nodes just skips the loop
   for (size_t i = 0; i < size; i++) {
     // prints current nodes value and goes to the next one

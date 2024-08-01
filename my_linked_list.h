@@ -1,7 +1,6 @@
 #ifndef MY_LINKED_LIST
 #define MY_LINKED_LIST
 
-#include <iostream>
 
 class my_linked_list {
 private:
@@ -24,9 +23,9 @@ public:
 
   int is_empty();
 
-  void push(int value);
+  void insert_last(int value);
   
-  int pop();
+  int remove_last();
   
   void insert_at(int index, int value);
   

@@ -1,7 +1,6 @@
 #ifndef MY_DLINKED_LIST
 #define MY_DLINKED_LIST
 
-#include <iostream>
 
 class my_dlinked_list {
 private:
@@ -20,14 +19,14 @@ private:
   int size = 0;
 
 public:
-  my_linked_list();
-  ~my_linked_list();
+  my_dlinked_list();
+  ~my_dlinked_list();
 
   int is_empty();
 
-  void push(int value);
+  void insert_last(int value);
   
-  int pop();
+  int remove_last();
   
   void insert_at(int index, int value);
   
