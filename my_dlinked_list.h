@@ -24,6 +24,10 @@ public:
 
   int is_empty();
 
+  void insert_first(int value);
+  
+  int remove_first();
+
   void insert_last(int value);
   
   int remove_last();

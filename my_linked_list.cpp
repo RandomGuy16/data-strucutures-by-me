@@ -4,8 +4,7 @@
 
 my_linked_list::node::node() : value(0) {
 }
-my_linked_list::node::node(int value) {
-  this->value = value;
+my_linked_list::node::node(int value) : value(value) {
 }
 my_linked_list::node::~node() = default;
 
@@ -14,10 +13,10 @@ my_linked_list::my_linked_list() :
 }
 my_linked_list::~my_linked_list() {
   node * temp = nullptr;
-  for (node * trav = head; trav->next != nullptr; trav = trav->next) {
+  if (is_empty()) exit(0);
+  for (node * trav = head; trav->next != nullptr; trav = temp) {
     temp = trav->next;
     delete trav;
-    trav = temp;
   }
 }
 
@@ -49,9 +48,12 @@ int my_linked_list::remove_last() {
     head = tail = nullptr;
   }
   else {
+    // start iterating from head
     node * trav = head;
+    // until we are one node before tail
     for ( ; trav->next != tail; trav = trav->next);
 
+    // then save tail value and set previous node's pointer to nullptr
     tail_value = tail->value;
     delete tail;
     tail = trav;
@@ -62,25 +64,62 @@ int my_linked_list::remove_last() {
   return tail_value;
 }
 
-void my_linked_list::insert_at(int index, int value) {
-  if (index > size) {
-    throw std::out_of_range("Index out of range");
-  }
-  else if (is_empty() && index == 0) {
-    head = tail = new node(value);
+void my_linked_list::insert_first(int value) {
+  if (is_empty()) {
+    insert_last(value);
   }
   else {
-    node * trav1 = head;
-    node * trav2 = nullptr;
     auto * new_node = new node(value);
-
-    for (size_t i = 0; i < index; i++) {
-      trav2 = trav1;
-      trav1 = trav1->next;
-    }
-    trav2->next = new_node;
-    new_node->next = trav1;
+    new_node->next = head;
+    head = new_node;
+    size++;
   }
+}
+
+int my_linked_list::remove_first() {
+  if (is_empty()) {
+    throw std::runtime_error("Deleting from empty list");
+  }
+  else if (size == 1) {
+    return remove_last();
+  }
+  auto * temp = head;
+  int target_value = temp->value;
+  head = head->next;
+  
+  delete temp;
+  size--;
+  return target_value;
+}
+
+// look at this
+// trav_n = traveler next
+// trav_p = traveler previous
+// trav_n is ahead of trav_p
+void my_linked_list::insert_at(int index, int value) {
+  if (size < index) {
+    throw std::out_of_range("Index out of range");
+  }
+  else if (size == index) {
+    insert_last(value);
+    return;
+  }
+  else if (index == 0) {
+    insert_first(value);
+    return;
+  }
+  node * trav_n = head;
+  node * trav_p = nullptr;
+  auto * new_node = new node(value);
+
+  // iterate all the way such that trav_p is previous to our new node
+  // and trav_n is the next node to our new node
+  for (size_t i = 0; i < index; i++) {
+    trav_p = trav_n;
+    trav_n = trav_n->next;
+  }
+  trav_p->next = new_node;
+  new_node->next = trav_n;
   size++;
 }
 
@@ -90,6 +129,9 @@ int my_linked_list::remove_at(int index) {
   }
   else if (size == 0) {
     throw std::runtime_error("Deleting from empty list");
+  }
+  else if (index == 0) {
+    return remove_first();
   }
   else {
     node * trav1 = head;

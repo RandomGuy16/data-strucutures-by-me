@@ -27,6 +27,9 @@ public:
   
   int remove_last();
   
+  void insert_first(int value);
+  int remove_first();
+
   void insert_at(int index, int value);
   
   int remove_at(int index);
