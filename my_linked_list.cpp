@@ -24,6 +24,20 @@ int my_linked_list::is_empty() {
   return size == 0;
 }
 
+int my_linked_list::get_at(int index) {
+  if (is_empty()) {
+    throw std::runtime_error("Access empty list");
+  }
+  else if (index >= size) {
+    throw std::runtime_error("Index out of bounds");
+  }
+  node * trav = head;
+  for (size_t i = 0; i < index; i++) {
+    trav = trav->next;
+  }
+  return trav->value;
+}
+
 void my_linked_list::insert_last(int value) {
   auto * new_node = new node(value);
   if (is_empty()) {
