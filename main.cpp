@@ -3,6 +3,7 @@
 #include "my_dynamic_arr.h"
 #include "my_linked_list.h"
 #include "my_dlinked_list.h"
+#include "my_stack.h"
 
 using namespace std;
 
@@ -64,6 +65,26 @@ int main(int argc, char const *argv[])
   dl_list.to_string();
   dl_list.remove_at(3);
   dl_list.to_string();
+
+  cout << "stack test section" << endl;
+
+  auto mstack = my_stack();
+
+  mstack.to_string();
+  mstack.push(1);
+  mstack.to_string();
+  mstack.push(3);
+  mstack.to_string();
+  mstack.pop();
+  mstack.to_string();
+  mstack.push(2);
+  mstack.to_string();
+  mstack.push(3);
+  mstack.to_string();
+  mstack.push(4);
+  mstack.to_string();
+  mstack.pop();
+  mstack.to_string();
 
   return 0;
 }
