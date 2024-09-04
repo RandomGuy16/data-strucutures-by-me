@@ -4,6 +4,7 @@
 #include "my_linked_list.h"
 #include "my_dlinked_list.h"
 #include "my_stack.h"
+#include "my_queue.h"
 
 using namespace std;
 
@@ -85,6 +86,20 @@ int main(int argc, char const *argv[])
   mstack.to_string();
   mstack.pop();
   mstack.to_string();
+  
+  cout << "<-- queue implementation test -->" << endl;
+  auto mqueue = my_queue();
+
+  mqueue.to_string();
+  mqueue.enqueue(1);
+  mqueue.to_string();
+  mqueue.enqueue(2);
+  mqueue.to_string();
+  mqueue.enqueue(3);
+  mqueue.to_string();
+  mqueue.dequeue();
+  mqueue.to_string();
+  cout << mqueue.peek() << endl;
 
   return 0;
 }

@@ -23,6 +23,8 @@ public:
 
   int is_empty();
 
+  int get_size();
+
   int get_at(int index);
 
   void insert_last(int value);

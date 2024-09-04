@@ -24,6 +24,10 @@ int my_linked_list::is_empty() {
   return size == 0;
 }
 
+int my_linked_list::get_size() {
+  return size;
+}
+
 int my_linked_list::get_at(int index) {
   if (is_empty()) {
     throw std::runtime_error("Access empty list");
