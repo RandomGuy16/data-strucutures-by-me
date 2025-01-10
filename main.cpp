@@ -49,7 +49,10 @@ int main(int argc, char const *argv[])
 
 	cout << "<-- priority queue implementation test -->" << endl;
 
-	unique_ptr<my_pqueue<string>> pq = make_unique<my_pqueue<string>>();
-
+	auto pq = make_unique<my_pqueue<int>>();
+	pq->add(1);
+	pq->add(2);
+	pq->add(0);
+	
   return 0;
 }
