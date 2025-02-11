@@ -53,14 +53,14 @@ int main(int argc, char const *argv[])
 	pq->add(5);
 	pq->add(6);
 	pq->add(7);
-	pq->poll();
+	cout << pq->poll() << endl;
   cout << boolalpha;
 	cout << pq->contains(8) << endl;
 	cout << pq->contains(6) << endl;
-	pq->remove(6);
-  pq->remove(3);
+	cout << pq->remove(6) << endl;
+  cout << pq->remove(3) << endl;
   for (size_t i = 0; pq->get_size() > 0; i++) {
-    pq->poll();
+    cout << pq->poll() << endl;
   }
 
   return 0;

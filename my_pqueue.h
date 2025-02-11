@@ -9,16 +9,17 @@ template <typename T>
 class my_pqueue
 {
 private:
+	// number of elements inside
 	int size = 0;
+	// list to store the data
 	std::vector<T> heap;
+	// the invariant funcgtion
 	std::function<bool(T, T)> invariant;
 
+	// these functions get the parent and childs when adding or polling
 	int get_parent_i(int node_i) const {
-		if (node_i == 0) {
-			return 0;
-		} else {
-			return (node_i - 1)/2;
-		}
+		if (node_i == 0) return 0;
+		else return (node_i - 1)/2;
 	}
 	int get_lchild_i(int node_i) const { return 2*node_i + 1; }
 	int get_rchild_i(int node_i) const { return 2*node_i + 2; }
@@ -26,11 +27,14 @@ private:
 	void swap(int node_i, int target_i) {
 		// save origin node value
 		T node_v = heap.at(node_i);
+
 		//swap values
 		heap.at(node_i) = heap.at(target_i);
 		heap.at(target_i) = node_v;
 	}
 
+	// when passed a boolean argument to the constructor
+	// it defines if the pq will have a min or max heap
 	void set_min_heap() {
 		invariant = [](T parent, T child) -> bool {
 			return parent <= child;
@@ -63,9 +67,11 @@ public:
 		if (heap.empty()) {
 			throw std::runtime_error("removing from empty queue");
 		}
-		swap(0, size - 1);
+
 		T target_v = heap.at(0);
-		heap.pop_back();
+		//swap(0, size - 1);
+		//heap.pop_back();
+		heap.erase(heap.begin());
 		size--;
 
 		if (heap.empty()) return target_v;
@@ -79,7 +85,7 @@ public:
 		int lchild_i = get_lchild_i(node_i);
 		int rchild_i = get_rchild_i(node_i);
 
-		if (!invariant(heap.at(parent_i), heap.at(node_i))) {
+		if (size > node_i && !invariant(heap.at(parent_i), heap.at(node_i))) {
 			// case 1: adding elements: bubble up and check if at the parent node are problems
 			swap(node_i, parent_i);
 			check_to_swap(parent_i);
