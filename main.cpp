@@ -1,15 +1,10 @@
 #include <iostream>
 #include <memory>
-#include "my_arr.h"
-#include "my_dynamic_arr.h"
-#include "my_linked_list.h"
-#include "my_dlinked_list.h"
 #include "my_stack.h"
 #include "my_queue.h"
 #include "my_pqueue.h"
 
 using namespace std;
-
 
 int main(int argc, char const *argv[])
 {
@@ -53,6 +48,20 @@ int main(int argc, char const *argv[])
 	pq->add(1);
 	pq->add(2);
 	pq->add(0);
-	
+	pq->add(3);
+	pq->add(4);
+	pq->add(5);
+	pq->add(6);
+	pq->add(7);
+	pq->poll();
+  cout << boolalpha;
+	cout << pq->contains(8) << endl;
+	cout << pq->contains(6) << endl;
+	pq->remove(6);
+  pq->remove(3);
+  for (size_t i = 0; pq->get_size() > 0; i++) {
+    pq->poll();
+  }
+
   return 0;
 }
