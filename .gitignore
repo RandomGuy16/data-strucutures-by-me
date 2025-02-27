@@ -55,6 +55,7 @@ CMakePresets.json
 # IDE specific files
 .idea/
 .vscode/
+.cache/
 
 # OS specific files
 .DS_Store
