@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include "my_unionfind.h"
+#include "my_pqueue.h"
 
 using namespace std;
 
@@ -48,6 +49,48 @@ int main(int argc, char const *argv[])
   cout << "union find tests section" << endl;
   cout << boolalpha;
   cout << "the given graph: A-B-C-D-E is a tree?: " << is_tree() << endl;
+
+  cout << "<-- priority queue implementation test -->" << endl;
+
+	auto pq = make_unique<my_pqueue<int>>();
+	pq->add(1);
+	pq->add(2);
+	pq->add(0);
+	pq->add(3);
+	pq->add(4);
+	pq->add(5);
+	pq->add(6);
+	pq->add(7);
+	cout << pq->poll() << endl;
+  cout << boolalpha;
+	cout << pq->contains(8) << endl;
+	cout << pq->contains(6) << endl;
+	cout << pq->remove(6) << endl;
+  cout << pq->remove(3) << endl;
+  for (size_t i = 0; pq->get_size() > 0; i++) {
+    cout << pq->poll() << endl;
+  }
+
+  cout << "inverted priority queue section" << endl;
+
+  auto ipq = make_unique<my_pqueue<int>>(false);
+	ipq->add(1);
+	ipq->add(2);
+	ipq->add(0);
+	ipq->add(3);
+	ipq->add(4);
+	ipq->add(5);
+	ipq->add(6);
+	ipq->add(7);
+	cout << ipq->poll() << endl;
+  cout << boolalpha;
+	cout << ipq->contains(8) << endl;
+	cout << ipq->contains(6) << endl;
+	cout << ipq->remove(6) << endl;
+  cout << ipq->remove(3) << endl;
+  for (size_t i = 0; ipq->get_size() > 0; i++) {
+    cout << ipq->poll() << endl;
+  }
 
   return 0;
 }
