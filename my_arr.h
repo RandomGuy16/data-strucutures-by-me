@@ -8,16 +8,16 @@ class my_arr {
     int items = 0;
 
     public:
-    my_arr(int capacity);
+    explicit my_arr(int capacity);
     ~my_arr();
 
-    int length();
+    int length() const;
 
-    int get_at(int index);
+    int get_at(int index) const;
 
     void set_at(int index, int value);
 
-    void to_string();
+    void to_string() const;
 
 };
 

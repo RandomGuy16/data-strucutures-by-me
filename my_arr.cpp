@@ -10,9 +10,9 @@ my_arr::~my_arr() {
   free(this->data);
 }
 
-int my_arr::length() { return items; }
+int my_arr::length() const { return items; }
 
-int my_arr::get_at(int index) {
+int my_arr::get_at(int index) const {
   if (capacity <= index || index < 0) {
     std::cout << "Index out of bounds!" << std::endl;
     exit(1);
@@ -29,7 +29,7 @@ void my_arr::set_at(int index, int value) {
   items = std::max(items, index + 1);
 }
 
-void my_arr::to_string() {
+void my_arr::to_string() const {
   std::cout << "[";
   for (size_t i = 0; i < capacity; i++) {
     std::cout << data[i];
