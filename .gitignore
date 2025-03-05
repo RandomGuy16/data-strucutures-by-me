@@ -55,7 +55,7 @@ CMakePresets.json
 # IDE specific files
 .idea/
 .vscode/
-.cache/
+.cache/*
 out/
 
 # OS specific files
