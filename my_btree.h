@@ -1,4 +1,5 @@
 #include <memory>
+#include <vector>
 
 #if !defined(MY_BTREE)
 #define MY_BTREE
@@ -8,17 +9,12 @@ class my_btree
 private:
 	class node
 	{
-	private:
-	// fields
 	public:
-		node * left;
-		node * right;
+		std::unique_ptr<node> left = nullptr;
+		std::unique_ptr<node> right = nullptr;
 		int value;
 
-		node(int value): left(), right() {
-			this->value = value;
-			this->left = nullptr;
-			this->right = nullptr;
+		explicit node(int value): value(value) {
 		};
 		~node() = default;
 	};
@@ -26,11 +22,12 @@ private:
 	int items = 0;
 	std::unique_ptr<node> root;
 
-	std::unique_ptr<node> get_new_node_parent(node node, int value);
+	void insert_new_node(node & node, int value);
 	
 public:
 	my_btree() = default;
-	my_btree(int value);
+	explicit my_btree(int value);
+	explicit my_btree(const std::vector<int> & values);
 	~my_btree() = default;
 
 	int size() const;
