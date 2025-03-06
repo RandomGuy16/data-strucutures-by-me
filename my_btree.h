@@ -22,7 +22,11 @@ private:
 	int items = 0;
 	std::unique_ptr<node> root;
 
-	void insert_new_node(node & node, int value);
+	void _p_insert_node(node & node, int value);
+
+	int _p_remove(node & trav, int value);
+
+	bool _p_has_node(node & trav, int value) const;
 	
 public:
 	my_btree() = default;
@@ -38,7 +42,7 @@ public:
 
 	int remove(int value);
 
-	int has(int value);
+	bool has_node(int value) const;
 
 };
 

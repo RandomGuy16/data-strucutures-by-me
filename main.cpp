@@ -11,6 +11,13 @@ int main(int argc, char const *argv[])
 
 	auto btree = make_unique<my_btree>(10);
 
+	cout << (btree == nullptr) << endl;
+	cout << (false) << endl;
+	cout << (0 == nullptr) << endl;
+	cout << (nullptr) << endl;
+	cout << (0) << endl;
+	cout << (0 == false) << endl;
+
 	btree->insert(2);
 	btree->insert(3);
 	btree->insert(15);

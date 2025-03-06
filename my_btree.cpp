@@ -11,17 +11,18 @@ my_btree::my_btree(const std::vector<int> & values) {
 		insert(i);
 	}
 }
-
+// get the # of nodes in binary tree
 int my_btree::size() const {
 	return items;
 }
-
+// check if binary tree has no nodes
 bool my_btree::empty() const {
 	return items == 0;
 }
 
 // This function is in testing, i dont get how sonarlint and clang don't warn me bout this
-void my_btree::insert_new_node (node & trav, int value) {
+// Also, the _p stands for private, so the accesible method is insert =D
+void my_btree::_p_insert_node (node & trav, int value) {
 	// check if we should go to the left or to the right
 	if (value < trav.value) {
 		// check if we can place a new node right there
@@ -33,7 +34,7 @@ void my_btree::insert_new_node (node & trav, int value) {
 		}
 		// otherwise, keep going downwards
 		else {
-			insert_new_node(* trav.left, value);
+			_p_insert_node(* trav.left, value);
 		}
 	}
 	// now check if we should go to the right
@@ -45,7 +46,7 @@ void my_btree::insert_new_node (node & trav, int value) {
 			items++;
 		}
 		else {
-			insert_new_node(* trav.right, value);
+			_p_insert_node(* trav.right, value);
 		}
 	}
 	else {
@@ -53,8 +54,7 @@ void my_btree::insert_new_node (node & trav, int value) {
 		// then don't add the value
 		return;
 	}
-
-};
+}
 
 void my_btree::insert(int value) {
 	// If there are no nodes, make root the first with the suggested value
@@ -64,8 +64,76 @@ void my_btree::insert(int value) {
 	}
 	// otherwise, insert the new value at the respective node following the BST invariant
 	else {
-		insert_new_node(* root.get(), value);
+		_p_insert_node(* root.get(), value);
 	}
-
 	return;
+}
+
+bool my_btree::_p_has_node(node & trav, int value) const {
+	// check if we should go to the left or to the right
+	if (value < trav.value) {
+		if (trav.left == nullptr) {
+			// This clause means our value wasn't found and we get kicked out
+			return false;
+		}
+		// otherwise keep going downwards
+		_p_has_node(* trav.left, value);
+	}
+	// now check if we should go to the right
+	else if (value > trav.value) {
+		if (trav.right == nullptr) {
+			// same as before, this clause means we didn't find the value
+			return false;
+		}
+		// keep going downwards
+		_p_has_node(* trav.right, value);
+	}
+	else {
+		// This means, we found the target, return true
+		return true;
+	}
+	return false;
+}
+
+// check if has one item
+bool my_btree::has_node(int value) const {
+	return _p_has_node(* root.get(), value);
+}
+
+int my_btree::_p_remove(node & trav, int value) {
+	// check if we should go to the left or to the right
+	if (value < trav.value) {
+		// if our value is at the left
+		if (trav.left->value == value) {
+			// delete()
+			// This clause means our value wasn't found and we get kicked out
+			return false;
+		}
+		// otherwise keep going downwards
+		_p_remove(* trav.left, value);
+	}
+	// now check if we should go to the right
+	else if (value > trav.value) {
+		if (trav.right->value == value) {
+			// same as before, if our target is at the right
+			// delete()
+			return false;
+		}
+		// keep going downwards to the right
+		_p_has_node(* trav.right, value);
+	}
+	else {
+		// This means, we found the target, return true
+
+		return value;
+	}
+	return false;
+}
+
+int my_btree::remove(int value) {
+	if (root->value == value) {
+		// delete_root()
+		return value;
+	}
+	return _p_remove(*root.get(), value);
 }
