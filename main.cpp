@@ -1,60 +1,62 @@
-#include <iostream>
-#include <memory>
-#include "my_unionfind.h"
-#include "my_btree.h"
+#include <bits/stdc++.h>
+#include <functional>
+
 
 using namespace std;
 
+// datatype for practice with hash functions
+struct person
+{
+	string name;
+	int age;
+	char sex;
+	int hash;
+
+	person(string_view name, int age, char sex): name(name), age(age), sex(sex) {
+		
+	}
+};
+
+// function to practice with hash functions
+int hash_function(const person & target) {
+	int hash {};
+
+	// add ascii value of every character in the name
+	for (const auto &chr : target.name) {
+		hash += (int)chr;
+	}
+
+	// sum the age
+	hash += target.age;
+
+	hash = hash << 1;
+	if (target.sex == 'M') hash++;
+	
+	// make it in the range [0,5]
+	return hash % 6;
+}
+
+// Specialization of hash built-in function for person type
+namespace std {
+	template <>
+	struct hash<person> {
+		size_t operator()(const person & p) const {
+			size_t res =  hash<int>{}(p.age) + hash<string>{}(p.name) + hash<char>{}(p.sex);
+			return res/3;
+		}
+	};
+}
+
 int main(int argc, char const *argv[])
 {
-	
-	cout << "<-- binary tree implementation test -->" << endl;
+	person marc("Marc", 19, 'M');
 
-	my_btree tree;
+	// create the hash function
+	hash<person> hasher;
 
-	// Insertion
-	tree.insert(10);
-	tree.insert(5);
-	tree.insert(15);
-	tree.insert(3);
-	tree.insert(7);
-	tree.insert(12);
-	tree.insert(18);
-	tree.insert(10); // Duplicate
 
-	// Check size and emptiness
-	std::cout << "Size of tree: " << tree.size() << std::endl; // Expected: 7
-	std::cout << "Is tree empty? " << (tree.empty() ? "Yes" : "No") << std::endl; // Expected: No
+	cout << "Hash purely by me: " << hash_function(marc) << endl;
+	cout << "Hash by c++ and me: " << hasher(marc) << endl;
 
-	// Search for nodes
-	std::cout << "Does tree have 7? " << (tree.has_node(7) ? "Yes" : "No") << std::endl; // Expected: Yes
-	std::cout << "Does tree have 20? " << (tree.has_node(20) ? "Yes" : "No") << std::endl; // Expected: No
-
-	// Get sorted array
-	std::vector<int> sorted_values = tree.get_sorted_array();
-	std::cout << "Sorted values: ";
-	for (int value : sorted_values) {
-			std::cout << value << " "; // Expected: 3 5 7 10 12 15 18
-	}
-	std::cout << std::endl;
-
-	// Removal of nodes
-	tree.remove(3);  // Remove leaf node
-	tree.remove(5);  // Remove node with one child
-	tree.remove(10); // Remove node with two children
-
-	// Check size after removals
-	std::cout << "Size of tree after removals: " << tree.size() << std::endl; // Expected: 4
-
-	// Final sorted array
-	sorted_values = tree.get_sorted_array();
-	std::cout << "Sorted values after removals: ";
-	for (int value : sorted_values) {
-			std::cout << value << " "; // Expected: 7 12 15 18
-	}
-	std::cout << std::endl;
-
-	std::cout << "height: " << tree.height() << std::endl;  // Expected: 3
-	
 	return 0;
 }
