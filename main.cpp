@@ -53,6 +53,8 @@ int main(int argc, char const *argv[])
 			std::cout << value << " "; // Expected: 7 12 15 18
 	}
 	std::cout << std::endl;
+
+	std::cout << "height: " << tree.height() << std::endl;  // Expected: 3
 	
 	return 0;
 }

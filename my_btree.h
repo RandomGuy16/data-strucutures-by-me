@@ -33,6 +33,8 @@ private:
 
 	bool _p_has_node(node & trav, int value) const;
 
+	int _p_height(node * trav) const;
+
 public:
 	my_btree() = default;
 	explicit my_btree(int value);
@@ -50,6 +52,8 @@ public:
 	bool has_node(int value) const;
 
 	void print_values() const;
+
+	int height() const;
 
 	std::vector<int> get_sorted_array() const;
 

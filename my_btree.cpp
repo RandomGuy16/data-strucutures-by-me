@@ -1,4 +1,5 @@
 #include "my_btree.h"
+#include <algorithm>
 #include <functional>
 #include <memory>
 #include <vector>
@@ -252,3 +253,17 @@ std::vector<int> my_btree::get_sorted_array() const {
 	return somearray;
 }
 
+
+//return the height of the tree
+int my_btree::height() const {
+	// call the rcursive private function
+	return _p_height(root.get());
+}
+
+// recursively reaches the end of the tree
+// when it reaches the end (leaf node) returns 0, but the previous
+// recursion makes it return 1, and the previous one makes it 2 and you get it
+int my_btree::_p_height(my_btree::node *trav) const {
+	if (trav == nullptr) return 0;
+	return std::max(_p_height(trav->left.get()), _p_height(trav->right.get())) + 1;
+}
