@@ -21,13 +21,18 @@ private:
 
 	int items = 0;
 	std::unique_ptr<node> root;
+	std::vector<int> sorted_array = std::vector<int>();
 
 	void _p_insert_node(node & node, int value);
+
+	int _p_replace_with_smallest_right(node & orig);
+	
+	int _p_replace_with_largest_left(node & orig);
 
 	int _p_remove(node & trav, int value);
 
 	bool _p_has_node(node & trav, int value) const;
-	
+
 public:
 	my_btree() = default;
 	explicit my_btree(int value);
@@ -43,6 +48,10 @@ public:
 	int remove(int value);
 
 	bool has_node(int value) const;
+
+	void print_values() const;
+
+	std::vector<int> get_sorted_array() const;
 
 };
 
