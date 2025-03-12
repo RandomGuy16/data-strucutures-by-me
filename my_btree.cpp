@@ -27,7 +27,7 @@ bool my_btree::empty() const {
 
 // This function is in testing, i dont get how sonarlint and clang don't warn me bout this
 // Also, the _p stands for private, so the accesible method is insert =D
-void my_btree::_p_insert_node (node & trav, int value) {
+void my_btree::_p_insert (node & trav, int value) {
 	// check if we should go to the left or to the right
 	if (value < trav.value) {
 		// check if we can place a new node right there
@@ -35,11 +35,10 @@ void my_btree::_p_insert_node (node & trav, int value) {
 			// place the new node
 			auto new_node = std::make_unique<my_btree::node>(value);
 			trav.left = std::move(new_node);
-			items++;
 		}
 		// otherwise, keep going downwards
 		else {
-			_p_insert_node(* trav.left, value);
+			_p_insert(* trav.left, value);
 		}
 	}
 	// now check if we should go to the right
@@ -48,59 +47,48 @@ void my_btree::_p_insert_node (node & trav, int value) {
 		if (trav.right == nullptr) {
 			auto new_node = std::make_unique<my_btree::node>(value);
 			trav.right = std::move(new_node);
-			items++;
 		}
 		else {
-			_p_insert_node(* trav.right, value);
+			_p_insert(* trav.right, value);
 		}
-	}
-	else {
-		// this clause is reached when the value and the current node's value are the same
-		// then don't add the value
-		return;
 	}
 }
 
 void my_btree::insert(int value) {
-	// If there are no nodes, make root the first with the suggested value
-	if (empty()) {
-		root = std::make_unique<my_btree::node>(value);
-		items++;
-	}
+	// if we already have the value don't do anything
+	if (has_node(value)) return;
+
 	// otherwise, insert the new value at the respective node following the BST invariant
-	else {
-		_p_insert_node(* root.get(), value);
-	}
-	return;
+	// If there are no nodes, make root the first with the suggested value
+	if (empty()) root = std::make_unique<my_btree::node>(value);
+	else _p_insert(* root.get(), value);
+	
+	items++;
 }
 
 
 // checks recursively if the binary tree has a node with the value requested
 // @param value
 bool my_btree::_p_has_node(node & trav, int value) const {
+	if (empty()) return false;
+
 	// check if we should go to the left or to the right
 	if (value < trav.value) {
-		if (trav.left == nullptr) {
-			// This clause means our value wasn't found and we get kicked out
-			return false;
-		}
+		// This clause means our value wasn't found and we get kicked out
+		if (trav.left == nullptr) return false;
 		// otherwise keep going downwards
 		return _p_has_node(* trav.left, value);
 	}
 	// now check if we should go to the right
 	else if (value > trav.value) {
-		if (trav.right == nullptr) {
-			// same as before, this clause means we didn't find the value
-			return false;
-		}
+		// same as before, this clause means we didn't find the value
+		if (trav.right == nullptr) return false;
+
 		// keep going downwards
 		return _p_has_node(* trav.right, value);
 	}
-	else {
-		// This means, we found the target, return true
-		return true;
-	}
-	return false;
+	// This means, we found the target, return true
+	return true;
 }
 
 // check if has one item
@@ -206,36 +194,31 @@ int my_btree::_p_remove(node & trav, int t_value) {
 		}
 	}
 
-	// at this point, trav1 has the target value, so lets do this
-	// first, reduce the size
-	items--;
-	// then check where does it have the subtree, if there's any
+	// at this point, trav1 has the target value
+	// check where does it have the subtree, if there's any
 	if (trav1->left != nullptr) return _p_replace_with_largest_left(*trav1);  // if has a subtree at the left
 	else if (trav1->right != nullptr) return _p_replace_with_smallest_right(*trav1);  // if has a subtree at the right or both
-	else {  // if no subtrees
-		// if trav2 is less than target value, then trav1 is at its right
-		if (trav2->value < t_value) trav2->right = nullptr;
-		else trav2->left = nullptr;  // otherwise is at the left
-	}
+	
+	// if no subtrees
+	if (t_value < trav2->value) trav2->left = nullptr;  // if trav2 is less than target value, then trav1 is at its right
+	else trav2->right = nullptr;  // otherwise is at the left
+
 	return t_value;
 }
 
 
 int my_btree::remove(int value) {
+	// if there isn't the value, just return
+	if (!has_node(value)) return false;
+
+	items--;
 	// if the value is at the root:
 	if (root->value == value) {
 		// check where does it have children, to delete easily
-		if (root->left != nullptr) {
-			items--;
-			return _p_replace_with_largest_left(*root.get());
-		}
-		else if (root->right != nullptr) {
-			items--;
-			return _p_replace_with_smallest_right(*root.get());
-		}
+		if (root->left != nullptr) return _p_replace_with_largest_left(*root.get());
+		else if (root->right != nullptr) return _p_replace_with_smallest_right(*root.get());
 		else {
 			// if it doesn't have children, kinda sad, remove root
-			items--;
 			root = nullptr;
 			return value;
 		}

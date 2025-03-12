@@ -23,7 +23,7 @@ private:
 	std::unique_ptr<node> root;
 	std::vector<int> sorted_array = std::vector<int>();
 
-	void _p_insert_node(node & node, int value);
+	void _p_insert(node & node, int value);
 
 	int _p_replace_with_smallest_right(node & orig);
 	
