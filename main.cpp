@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
-#include "my_hashtable.h"
+#include "hashtable_sch.h"
 
 
 int main(int argc, char const *argv[]) {
-	my_hashtable ht;
+	hashtable_sch ht;
 
 	// Test empty hashtable
 	std::cout << "Is empty: " << ht.empty() << "\n"; // Expected: 1 (true)

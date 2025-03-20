@@ -1,5 +1,4 @@
-#include "my_hashtable.h"
-#include <algorithm>
+#include "hashtable_sch.h"
 #include <cmath>
 #include <string_view>
 #include <utility>
@@ -16,13 +15,13 @@ using std::string_view;
 using hashing_table = std::vector<std::forward_list<std::pair<std::string, std::string>>>;
 
 
-my_hashtable::my_hashtable() :
+hashtable_sch::hashtable_sch() :
 table(DEFAULT_SIZE), items(0), threshold(static_cast<int>(DEFAULT_SIZE*DEFAULT_LOAD_FACTOR)),
 capacity(DEFAULT_SIZE), hasher()
 {
 }
 
-my_hashtable::my_hashtable(const string & key, const string & value) :
+hashtable_sch::hashtable_sch(const string & key, const string & value) :
 table(DEFAULT_SIZE), items(0), threshold(static_cast<int>(DEFAULT_SIZE*DEFAULT_LOAD_FACTOR)),
 capacity(DEFAULT_SIZE), hasher()
 {
@@ -30,20 +29,20 @@ capacity(DEFAULT_SIZE), hasher()
 }
 
 
-int my_hashtable::size() const { return items; }
+int hashtable_sch::size() const { return items; }
 
-bool my_hashtable::empty() const {
+bool hashtable_sch::empty() const {
 	return size() == 0;
 }
 
 // return hash based on the size of the table
-int my_hashtable::get_hash(const string & key) const {
+int hashtable_sch::get_hash(const string & key) const {
 	return hasher(key)%capacity;
 }
 
 
 // check if the key provided is inside the hashmap
-bool my_hashtable::has_key(const string & key) const {
+bool hashtable_sch::has_key(const string & key) const {
 	// iterate over the proper bucket
 	const auto & bucket = table.at(get_hash(key));
 	return std::any_of(
@@ -57,7 +56,7 @@ bool my_hashtable::has_key(const string & key) const {
 
 
 // create a new table with extended capacity
-void my_hashtable::resize_table() {
+void hashtable_sch::resize_table() {
 	capacity *= 2;
 	threshold = static_cast<int>(capacity*DEFAULT_LOAD_FACTOR);
 	auto new_table = hashing_table(capacity);
@@ -75,7 +74,7 @@ void my_hashtable::resize_table() {
 }
 
 
-void my_hashtable::add(string key, string value) {
+void hashtable_sch::add(string key, string value) {
 	// if key already added, dont to anything
 	if (has_key(key)) return;
 
@@ -92,7 +91,7 @@ void my_hashtable::add(string key, string value) {
 }
 
 
-string my_hashtable::get(const string & key) const {
+string hashtable_sch::get(const string & key) const {
 	// check inside the hashtable
 	for (auto const& [pair_key, pair_value] : table.at(get_hash(key))) {
 		if (pair_key == key) return pair_value;
@@ -103,7 +102,7 @@ string my_hashtable::get(const string & key) const {
 }
 
 
-string my_hashtable::remove(const string & key) {
+string hashtable_sch::remove(const string & key) {
 	if (empty() || !has_key(key)) return "";
 
 	auto & bucket = table.at(get_hash(key));

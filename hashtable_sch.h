@@ -6,8 +6,8 @@
 #include <functional>
 
 
-#ifndef MY_HASHTABLE
-#define MY_HASHTABLE
+#ifndef HASHTABLE_SCH
+#define HASHTABLE_SCH
 
 using std::string;
 using std::string_view;
@@ -16,7 +16,7 @@ using std::forward_list;
 using std::vector;
 using std::hash;
 
-class my_hashtable {
+class hashtable_sch {
 private:
   // static fields
   constexpr static const double DEFAULT_LOAD_FACTOR = 0.75;
@@ -35,13 +35,13 @@ private:
   int get_hash(const string & key) const;
 
 public:
-  my_hashtable();
-  my_hashtable(const string & key, const string & value);
-  my_hashtable(my_hashtable &&) = default;
-  my_hashtable(const my_hashtable &) = default;
-  my_hashtable &operator=(my_hashtable &&) = default;
-  my_hashtable &operator=(const my_hashtable &) = default;
-  ~my_hashtable() = default;
+  hashtable_sch();
+  hashtable_sch(const string & key, const string & value);
+  hashtable_sch(hashtable_sch &&) = default;
+  hashtable_sch(const hashtable_sch &) = default;
+  hashtable_sch &operator=(hashtable_sch &&) = default;
+  hashtable_sch &operator=(const hashtable_sch &) = default;
+  ~hashtable_sch() = default;
 
   int size() const;
 
