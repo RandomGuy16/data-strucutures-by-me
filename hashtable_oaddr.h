@@ -18,12 +18,16 @@ class hashtable_oaddr {
 private:
   // static fields
   constexpr static const double LOAD_FACTOR = 0.333;
-  static const int DEFAULT_SIZE = 12;
+  static const int DEFAULT_SIZE = 8;
+
+  enum class Status {
+    FREE, OCCUPIED, TOMBSTONE
+  };
 
   // non static fields
   vector<string> keys;
   vector<string> values;
-  vector<bool> occupiedSlots;
+  vector<Status> statuses;
 
   int items;
   int threshold;
@@ -35,7 +39,6 @@ private:
    * 
    */
   hash<string> hasher;
-
   
   // functions
 
@@ -56,7 +59,7 @@ private:
   int mProbingFunction(int x) const;
 
   // resize
-  void resize_table();
+  void mResizeTable();
 
 
 public:
@@ -68,15 +71,15 @@ public:
   hashtable_oaddr &operator=(const hashtable_oaddr &) = default;
   ~hashtable_oaddr() = default;
 
-  int size() const;
+  int getSize() const;
 
-  bool empty() const;
+  bool isEmpty() const;
 
   bool hasKey(const string & key) const;
 
   bool add(const string &rKey, string_view rValue);
 
-  string get(const string & key) const;
+  string get(const string & key);
 
 	string remove(const string &rKey);
 };
