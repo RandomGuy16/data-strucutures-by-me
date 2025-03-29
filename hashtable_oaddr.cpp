@@ -9,6 +9,7 @@ using std::string;
 using std::string_view;
 
 
+// Default constructor: Initializes an empty hash table with default capacity and load factor.
 hashtable_oaddr::hashtable_oaddr() :
 keys(DEFAULT_SIZE),
 values(DEFAULT_SIZE),
@@ -20,6 +21,7 @@ hasher()
 {
 }
 
+// Parameterized constructor: Initializes the hash table and inserts the given key-value pair.
 hashtable_oaddr::hashtable_oaddr(const string & key, const string & value) :
 keys(DEFAULT_SIZE),
 values(DEFAULT_SIZE),
@@ -32,21 +34,25 @@ hasher()
 	add(key, value);
 }
 
-
 int hashtable_oaddr::getSize() const { return items; }
 
 bool hashtable_oaddr::isEmpty() const { return items == 0; }
 
-// return hash based on the size of the table
+// Computes the hash value for the given key and ensures it fits within the table's capacity.
+// The modulo operation ensures the hash value is within the range [0, capacity - 1].
 int hashtable_oaddr::mGetHash(const string & key) const {
 	return hasher(key)%capacity;
 }
 
+// Computes the quadratic probing offset for the given attempt number.
+// Quadratic probing helps reduce clustering by spreading out collisions more evenly.
 int hashtable_oaddr::mProbingFunction(int x) const {
 	return x*(x + 1)/2;
 }
 
-// check if the key provided is inside the hashtable
+// Checks if the given key exists in the hash table using quadratic probing.
+// Probing stops when a FREE slot is encountered, as it indicates the key is not in the table.
+// The function returns true if the key is found, false otherwise.
 bool hashtable_oaddr::hasKey(const string & key) const {
 	// initialize the counter for probing
 	int x {};
