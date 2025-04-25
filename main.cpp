@@ -1,28 +1,27 @@
-#include <iostream>
-#include "my_arr.h"
-#include "my_dynamic_arr.h"
+#include <bits/stdc++.h>
+#include "hashtable_oaddr.h"
+
 
 using namespace std;
 
+int main(int argc, char const *argv[]) {
+	auto ht = hashtable_oaddr();
 
-int main(int argc, char const *argv[])
-{
-  
-  auto arr = my_arr(2);
-  arr.set_at(0, 1);
-  arr.set_at(1, 2);
-  arr.get_at(0);
-  arr.get_at(1);
-  arr.to_string();
-  
-  auto d_arr = my_dynamic_arr();
+	ht.add("apple", "red");
+	ht.add("banana", "yellow");
+	std::cout << "Insert Test: " << (ht.hasKey("apple") && ht.hasKey("banana") ? "PASS" : "FAIL") << "\n";
+	
+	ht.add("apple", "red");
+	ht.add("apple", "green");
+	std::cout << "Update Test: " << (ht.get("apple") == "green" ? "PASS" : "FAIL") << "\n";
 
-  d_arr.get_at(5);
-  d_arr.set_at(6, 1);
-  d_arr.set_at(512, 56);
-  d_arr.to_string();
+	ht.add("apple", "red");
+	ht.remove("apple");
+	std::cout << "Remove Test: " << (!ht.hasKey("apple") ? "PASS" : "FAIL") << "\n";
 
-  cout << "checkpoint" << endl;
+	ht.add("abc", "first");
+	ht.add("cba", "second"); // Assume same hash
+	std::cout << "Collision Test: " << ((ht.get("abc") == "first") && (ht.get("cba") == "second") ? "PASS" : "FAIL") << "\n";
 
-  return 0;
+	return 0;
 }
